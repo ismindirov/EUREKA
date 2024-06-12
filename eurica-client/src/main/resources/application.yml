@@ -1,0 +1,22 @@
+server:
+  port: 8080  # Change the port to avoid conflicts with Eureka Server
+
+spring:
+  application:
+    name: eureka-client
+  cloud:
+    config:
+      enabled: false  # Disable Config Server
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/  # Use container name
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  # Expose all actuator endpoints
