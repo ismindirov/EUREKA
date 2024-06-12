@@ -32,4 +32,5 @@ spec:
   - protocol: TCP
     port: 8080
     targetPort: 8080
-  type: LoadBalancer
+    nodePort: 31074  # Add this line to specify the NodePort
+  type: NodePort
