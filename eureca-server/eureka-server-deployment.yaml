@@ -29,4 +29,6 @@ spec:
   - protocol: TCP
     port: 8761
     targetPort: 8761
-  type: LoadBalancer
+    nodePort: 32114  # Add this line to specify the NodePort
+  type: NodePort
+
