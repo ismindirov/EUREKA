@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  eureka-server:
+    image: ismindirov/eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - eureka-net
+
+  eureka-client:
+    image: ismindirov/eureka-client
+    ports:
+      - "8080:8080"
+    environment:
+      - EUREKA_SERVER_URL=http://eureka-server:8761/eureka
+      - SPRING_APPLICATION_NAME=eureka-client
+    depends_on:
+      - eureka-server
+    networks:
+      - eureka-net
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - "9090:9090"
+    networks:
+      - eureka-net
+    depends_on:
+      - eureka-server
+      - eureka-client
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - eureka-net
+    depends_on:
+      - prometheus
+
+networks:
+  eureka-net:
+    driver: bridge
